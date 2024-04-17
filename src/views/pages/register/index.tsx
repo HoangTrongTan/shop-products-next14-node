@@ -1,5 +1,4 @@
 'use client'
-//import mui
 import {
   Box,
   Button,
@@ -11,42 +10,17 @@ import {
   Typography,
   useTheme
 } from '@mui/material'
-
-//import yup
-
 import * as yup from 'yup'
-//import nextpage
-
 import { NextPage } from 'next'
-//import nextpage
-
 import CustomTextField from 'src/components/text-field'
-//import nextpage
-
 import { Controller, useForm } from 'react-hook-form'
-//import nextpage
-
 import { yupResolver } from '@hookform/resolvers/yup'
-//import nextpage
-
 import { EMAIL_REG, PASSWORD_REG } from 'src/configs/regex'
-//import nextpage
-
 import { useState } from 'react'
-//import nextpage
-
 import IconifyIcon from 'src/components/Icon'
-//import nextpage
-
 import Image from 'next/image'
-//import nextpage
-
 import RegisterDark from '/public/images/register-dark.png'
-//import nextpage
-
 import RegisterLight from '/public/images/register-light.png'
-//import nextpage
-
 import Link from 'next/link'
 
 type TProps = {}
