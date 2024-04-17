@@ -33,7 +33,7 @@ import Image from 'next/image'
 import LoginDark from '/public/images/login-dark.png'
 //import
 import LoginLight from '/public/images/login-light.png'
-//import
+//import import
 import Link from 'next/link'
 
 type TProps = {}
