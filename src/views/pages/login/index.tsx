@@ -1,30 +1,41 @@
 'use client'
+//import
 import {
   Box,
   Button,
   Checkbox,
   CssBaseline,
   FormControlLabel,
-  Grid,
   IconButton,
   InputAdornment,
   Typography,
   useTheme
 } from '@mui/material'
+//import
 import * as yup from 'yup'
+//import
 import { NextPage } from 'next'
+//import
 import CustomTextField from 'src/components/text-field'
+//import
 import { Controller, useForm } from 'react-hook-form'
+//import
 import { yupResolver } from '@hookform/resolvers/yup'
+//import
 import { EMAIL_REG, PASSWORD_REG } from 'src/configs/regex'
+//import
 import { useState } from 'react'
+//import
 import IconifyIcon from 'src/components/Icon'
+//import
 import Image from 'next/image'
+//import
 import LoginDark from '/public/images/login-dark.png'
+//import
 import LoginLight from '/public/images/login-light.png'
-import FaceBook from '/public/svgs/facebook.svg'
-import Google from '/public/svgs/google.svg'
+//import
 import Link from 'next/link'
+
 type TProps = {}
 type TDefaultValues = {
   email: string
