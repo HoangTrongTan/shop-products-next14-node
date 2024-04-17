@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Box,
   Button,
@@ -9,7 +10,7 @@ import {
   InputAdornment,
   Typography,
   useTheme
-} from '@mui/material'
+} from '@mui/material';
 import * as yup from 'yup'
 import { NextPage } from 'next'
 import CustomTextField from 'src/components/text-field'

@@ -1,4 +1,3 @@
-// ** Type Imports
 import { Palette } from '@mui/material'
 import { Skin } from 'src/types/layouts'
 
@@ -8,7 +7,6 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
   const lightColor = '47, 43, 61'
   const darkColor = '208, 212, 241'
   const darkPaperBgColor = '#2F3349'
-  // const darkPaperBgColor = '#fff'
   const mainColor = mode === 'light' ? lightColor : darkColor
 
   const defaultBgColor = () => {
@@ -20,7 +18,6 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       // return '#F8F7FA'
       return '#F8F7FA'
     } else return '#25293C'
-    // } else return '#fff'
   }
 
   return {
