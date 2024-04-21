@@ -1,16 +1,11 @@
 'use client'
 import Head from 'next/head'
 import Button from '@mui/material/Button'
-import { useTheme } from '@emotion/react'
-import { useSettings } from 'src/hooks/useSettings'
 import CustomTextField from 'src/components/text-field'
 import { Box } from '@mui/material'
 import Link from 'next/link'
 
 export default function Home() {
-  const theme = useTheme()
-  const { settings } = useSettings()
-
   // console.log('Theme', { theme, settings })
   
   return (
