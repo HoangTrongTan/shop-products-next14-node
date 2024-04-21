@@ -11,7 +11,7 @@ export default function Home() {
   const theme = useTheme()
   const { settings } = useSettings()
 
-  console.log('Theme', { theme, settings })
+  // console.log('Theme', { theme, settings })
   
   return (
     <>

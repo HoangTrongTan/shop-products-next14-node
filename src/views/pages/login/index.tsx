@@ -22,6 +22,7 @@ import Image from 'next/image'
 import LoginDark from '/public/images/login-dark.png'
 import LoginLight from '/public/images/login-light.png'
 import Link from 'next/link'
+import { useAuth } from 'src/hooks/useAuth'
 
 type TProps = {}
 type TDefaultValues = {
@@ -31,6 +32,8 @@ type TDefaultValues = {
 const LoginPage: NextPage<TProps> = () => {
   const theme = useTheme()
   const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+  const { login } = useAuth()
   const schema = yup
     .object()
     .shape({
@@ -58,7 +61,11 @@ const LoginPage: NextPage<TProps> = () => {
   })
 
   const onSubmit = (data: { email: string; password: string }) => {
-    console.log('lêu lêu lêu ', data, errors)
+    // if(Object.keys(errors)?.length){
+      login({ ...data, rememberMe })
+    // }
+    console.log("DATA: ", data, errors);
+    
   }
 
   return (
@@ -172,7 +179,14 @@ const LoginPage: NextPage<TProps> = () => {
             </Box>
 
             <FormControlLabel
-              control={<Checkbox value='remember' color='primary' name='checkbox' />}
+              control={
+                <Checkbox
+                  value='remember'
+                  color='primary'
+                  name='checkbox'
+                  onChange={() => setRememberMe(prev => !prev)}
+                />
+              }
               label='Remember me'
             />
             <Link href='#'>Forgot password?</Link>
