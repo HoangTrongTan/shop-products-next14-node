@@ -7,6 +7,9 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import { mainListItems, secondaryListItems } from './listItem'
 import { NextPage } from 'next'
+import { Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material'
+import IconifyIcon from 'src/components/Icon'
+import ListVerticalLayout from './ListVerticalLayout'
 
 const drawerWidth: number = 240
 
@@ -26,9 +29,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       }),
-      width: theme.spacing(7),
+      width: theme.spacing(12),
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9)
+        width: theme.spacing(12)
       }
     })
   }
@@ -38,6 +41,7 @@ type TProps = {
   toggleDrawer: () => void
 }
 const VerticalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
+  
   return (
     <Drawer variant='permanent' open={open}>
       <Toolbar
@@ -48,14 +52,12 @@ const VerticalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
           px: [1]
         }}
       >
-        <IconButton onClick={toggleDrawer}></IconButton>
+        <IconButton onClick={toggleDrawer}>
+          <IconifyIcon icon={'mingcute:left-fill'} />
+        </IconButton>
       </Toolbar>
       <Divider />
-      <List component='nav'>
-        {mainListItems}
-        <Divider sx={{ my: 1 }} />
-        {secondaryListItems}
-      </List>
+      <ListVerticalLayout open={open} />
     </Drawer>
   )
 }

@@ -2,9 +2,10 @@ import { NextPage } from 'next'
 type TProps = {
   open: boolean
   toggleDrawer: () => void
+  isHiddenMenu?: boolean // ? để thể hiện giá trị mặc định
 }
 import * as React from 'react'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -37,31 +38,37 @@ const AppBar = styled(MuiAppBar, {
   })
 }))
 
-const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
+const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }) => {
+  const theme = useTheme()
+
   return (
     <AppBar position='absolute' open={open}>
       <Toolbar
         sx={{
-          pr: '24px' // keep right padding when drawer closed
+          pr: '30px', // keep right padding when drawer closed,
+          margin: '0 20px'
         }}
       >
-        <IconButton
-          edge='start'
-          color='inherit'
-          aria-label='open drawer'
-          onClick={toggleDrawer}
-          sx={{
-            marginRight: '36px',
-            ...(open && { display: 'none' })
-          }}
-        >
-          <IconifyIcon icon={'ic:round-menu'} />
-        </IconButton>
+        {!isHiddenMenu && (
+          <IconButton
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: '36px',
+              ...(open && { display: 'none' })
+            }}
+          >
+            <IconifyIcon icon={'ic:round-menu'} />
+          </IconButton>
+        )}
+
         <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
           Dashboard
         </Typography>
         <IconButton color='inherit'>
-          <Badge badgeContent={4} color='secondary'>
+          <Badge badgeContent={4} sx={{ color: theme.palette.error.main }}>
             <IconifyIcon icon={'ri:notification-4-fill'} />
           </Badge>
         </IconButton>
