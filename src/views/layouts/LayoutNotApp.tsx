@@ -10,14 +10,13 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 
 import HorizontalLayout from './HorizontalLayout'
-import VerticalLayout from './VerticalLayout'
 
 const LayoutNotApp: NextPage<TProps> = ({ children }) => {
   const [open, setOpen] = React.useState(false)
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <HorizontalLayout toggleDrawer={() => {}} open={open} isHiddenMenu={true} />
+      <HorizontalLayout toggleDrawer={() => {setOpen}} open={open} isHiddenMenu={true} />
       <Box
         component='main'
         sx={{

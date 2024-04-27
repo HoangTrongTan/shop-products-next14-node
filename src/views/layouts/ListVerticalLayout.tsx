@@ -1,7 +1,7 @@
-import { Box, BoxProps, List, styled } from '@mui/material'
+import { List } from '@mui/material'
 import { NextPage } from 'next'
 import * as React from 'react'
-import { Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material'
+import { Collapse, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import IconifyIcon from 'src/components/Icon'
 import { VerticalItems } from 'src/configs/layout'
 
@@ -25,6 +25,7 @@ const RecursiveListItems = ({ items, level, openItems, setOpenItems, disabled }:
       [title]: !prev[title]
     }))
   }
+  
   return (
     <>
       {items.map((item: any, i: any) => (
