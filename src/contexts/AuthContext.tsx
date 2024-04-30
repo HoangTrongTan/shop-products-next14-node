@@ -16,6 +16,7 @@ import { loginAuth, loginOut } from 'src/services/auth'
 import axios from 'axios'
 import { CONFIG_API } from 'src/configs/api'
 import { clearLocalUserData, setLocalUserData } from 'src/helpers/storage'
+import instanceAxios from 'src/helpers/axios/inedx'
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -47,12 +48,8 @@ const AuthProvider = ({ children }: Props) => {
       console.log('RES:::::', { storedToken })
       if (storedToken) {
         setLoading(true)
-        await axios
-          .get(CONFIG_API.AUTH.AUTH_ME, {
-            headers: {
-              Authorization: `Bearer ${storedToken}`
-            }
-          })
+        await instanceAxios
+          .get(CONFIG_API.AUTH.AUTH_ME)
           .then(async response => {
             setLoading(false)
             setUser({ ...response.data.userData })
@@ -97,10 +94,11 @@ const AuthProvider = ({ children }: Props) => {
   }
 
   const handleLogout = () => {
-    loginOut();
-    setUser(null)
-    clearLocalUserData()
-    router.push('/login')
+    loginOut().then(res => {
+      setUser(null)
+      clearLocalUserData()
+      router.push('/login')
+    })
   }
 
   const values = {
