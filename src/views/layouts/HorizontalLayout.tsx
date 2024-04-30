@@ -11,7 +11,9 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import IconifyIcon from 'src/components/Icon'
-import UserDropDown from 'src/components/user-dropdown'
+import UserDropDown from 'src/views/layouts/components/user-dropdown'
+import ModelToggle from './components/mode-toggle'
+import LanguageDropDown from './components/language-dropdown'
 
 const drawerWidth: number = 240
 
@@ -68,12 +70,10 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }
         <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
           Dashboard
         </Typography>
+        <LanguageDropDown />
+        {/* --------change theme------ */}
+        <ModelToggle />
         <UserDropDown />
-        {/* <IconButton color='inherit'>
-          <Badge badgeContent={4} sx={{ color: theme.palette.error.main }}>
-            <IconifyIcon icon={'ri:notification-4-fill'} />
-          </Badge>
-        </IconButton> */}
       </Toolbar>
     </AppBar>
   )

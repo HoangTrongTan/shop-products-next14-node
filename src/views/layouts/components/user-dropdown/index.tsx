@@ -7,12 +7,13 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import IconifyIcon from '../Icon'
+import IconifyIcon from '../../../../components/Icon'
 import { useAuth } from 'src/hooks/useAuth'
 import Image from 'next/image'
-
+import { useTranslation } from 'react-i18next'
 
 const UserDropDown = () => {
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
   const open = Boolean(anchorEl)
@@ -25,7 +26,7 @@ const UserDropDown = () => {
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title='Account'>
+        <Tooltip title={t('Account')}>
           <IconButton
             onClick={handleClick}
             size='small'
@@ -49,7 +50,7 @@ const UserDropDown = () => {
         id='account-menu'
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        onClick={handleClick}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -80,7 +81,7 @@ const UserDropDown = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          {user?.email} {user?.middleName} {user?.lastName} 
+          {user?.email} {user?.middleName} {user?.lastName}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Avatar /> Profile
