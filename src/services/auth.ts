@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { CONFIG_API } from 'src/configs/api'
 import instanceAxios from 'src/helpers/axios/inedx'
 import { TLoginAuth } from 'src/types/auth'

@@ -13,7 +13,6 @@ import authConfig from 'src/configs/auth'
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
 import { loginAuth, loginOut } from 'src/services/auth'
-import axios from 'axios'
 import { CONFIG_API } from 'src/configs/api'
 import { clearLocalUserData, setLocalUserData } from 'src/helpers/storage'
 import instanceAxios from 'src/helpers/axios/inedx'
@@ -95,6 +94,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogout = () => {
     loginOut().then(res => {
+      console.log(res);
       setUser(null)
       clearLocalUserData()
       router.push('/login')

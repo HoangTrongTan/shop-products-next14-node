@@ -6,15 +6,13 @@ import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import IconifyIcon from '../Icon'
 import { useAuth } from 'src/hooks/useAuth'
 import Image from 'next/image'
 
-type TProps = {}
 
-const UserDropDown = (props: TProps) => {
+const UserDropDown = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
   const open = Boolean(anchorEl)

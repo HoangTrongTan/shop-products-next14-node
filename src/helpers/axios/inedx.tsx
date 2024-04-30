@@ -58,6 +58,7 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
               console.log("resres: ", {res});
               
             }).catch(e => {
+              console.log(e);
               handleRedirectLogin(router, setUser)
             })
           }else{

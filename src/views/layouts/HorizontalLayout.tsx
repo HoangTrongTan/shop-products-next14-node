@@ -10,7 +10,6 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
 import IconifyIcon from 'src/components/Icon'
 import UserDropDown from 'src/components/user-dropdown'
 
@@ -41,7 +40,8 @@ const AppBar = styled(MuiAppBar, {
 
 const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }) => {
   const theme = useTheme()
-
+  console.log(theme);
+  
   return (
     <AppBar position='absolute' open={open}>
       <Toolbar
