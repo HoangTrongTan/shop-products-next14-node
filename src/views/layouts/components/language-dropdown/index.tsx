@@ -1,25 +1,25 @@
-import { Box, BoxProps, IconButton, Menu, MenuItem, Popover, Typography, styled } from '@mui/material'
+import {  IconButton, Menu, MenuItem } from '@mui/material'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconifyIcon from 'src/components/Icon'
 import { LANGUAGES_OPTIONS } from 'src/configs/i18n'
 
-interface TStyledItem extends BoxProps {
-  selected: boolean
-}
+// interface TStyledItem extends BoxProps {
+//   selected: boolean
+// }
 
-const StyledItemLanguages = styled(Box)<TStyledItem>(({ theme, selected }) => ({
-  cursor: 'pointer',
-  '.MuiTypography-root': {
-    padding: '8px 12px'
-  },
-  '&:hover': {
-    backgroundColor: '#F0F0F0'
-  },
-  ...(selected && {
-    background: '#F0F0F0'
-  })
-}))
+// const StyledItemLanguages = styled(Box)<TStyledItem>(({ theme, selected }) => ({
+//   cursor: 'pointer',
+//   '.MuiTypography-root': {
+//     padding: '8px 12px'
+//   },
+//   '&:hover': {
+//     backgroundColor: '#F0F0F0'
+//   },
+//   ...(selected && {
+//     background: '#F0F0F0'
+//   })
+// }))
 
 function LanguageDropDown() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
