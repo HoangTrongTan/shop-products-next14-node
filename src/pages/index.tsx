@@ -4,10 +4,12 @@ import Button from '@mui/material/Button'
 import CustomTextField from 'src/components/text-field'
 import { Box } from '@mui/material'
 import Link from 'next/link'
+import { NextPage } from 'next'
+import { ReactNode } from 'react'
+import LayoutNotApp from 'src/views/layouts/LayoutNotApp'
 
-export default function Home() {
-  // console.log('Theme', { theme, settings })
-  
+type TProps = {}
+const Home: NextPage<TProps> = () => {
   return (
     <>
       <Head>
@@ -17,10 +19,13 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Button variant='contained'>Hello world updated</Button>
-      <Box sx={{ margin: 6 , width: "200%" }}>
-        <CustomTextField id="demo-helper-text-misaligned-no-helper" label='Uncontrolled' />
+      <Box sx={{ margin: 6, width: '200%' }}>
+        <CustomTextField id='demo-helper-text-misaligned-no-helper' label='Uncontrolled' />
         <Link href={'/login'}>pageLogin</Link>
       </Box>
     </>
   )
 }
+
+export default Home
+Home.getLayout = (page: ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>

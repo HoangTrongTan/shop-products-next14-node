@@ -46,8 +46,8 @@ const LoginPage: NextPage<TProps> = () => {
     .required()
 
   const defaultValues: TDefaultValues = {
-    email: '',
-    password: ''
+    email: 'admin@gmail.com',
+    password: '123456789Kha@'
   }
 
   const {
@@ -62,10 +62,9 @@ const LoginPage: NextPage<TProps> = () => {
 
   const onSubmit = (data: { email: string; password: string }) => {
     // if(Object.keys(errors)?.length){
-      login({ ...data, rememberMe })
+    login({ ...data, rememberMe })
     // }
-    console.log("DATA: ", data, errors);
-    
+    console.log('DATA: ', data, errors)
   }
 
   return (

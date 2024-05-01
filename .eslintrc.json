@@ -10,19 +10,19 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     // add new line above comment
-    "lines-around-comment": [
-      "error",
-      {
-        "beforeLineComment": false,
-        "beforeBlockComment": false,
-        "allowBlockStart": true,
-        "allowClassStart": true,
-        "allowObjectStart": true,
-        "allowArrayStart": true
-      }
-    ],
+    // "lines-around-comment": [
+    //   "error",
+    //   {
+    //     "beforeLineComment": false,
+    //     "beforeBlockComment": false,
+    //     "allowBlockStart": true,
+    //     "allowClassStart": true,
+    //     "allowObjectStart": true,
+    //     "allowArrayStart": true
+    //   }
+    // ],
     // add new line above return
-    "newline-before-return": "error",
+    // "newline-before-return": "error",
     // add new line below import
     // "import/newline-after-import": [
     //   "error",
