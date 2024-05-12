@@ -10,13 +10,21 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 
 import HorizontalLayout from './HorizontalLayout'
+import { useTheme } from '@mui/material'
 
 const LayoutNotApp: NextPage<TProps> = ({ children }) => {
   const [open, setOpen] = React.useState(false)
+  const theme = useTheme()
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <HorizontalLayout toggleDrawer={() => {setOpen}} open={open} isHiddenMenu={true} />
+      <HorizontalLayout
+        toggleDrawer={() => {
+          setOpen
+        }}
+        open={open}
+        isHiddenMenu={true}
+      />
       <Box
         component='main'
         sx={{
@@ -28,7 +36,16 @@ const LayoutNotApp: NextPage<TProps> = ({ children }) => {
         }}
       >
         <Toolbar />
-        <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+        <Container
+          maxWidth='lg'
+          sx={{
+            m: 4,
+            maxWidth: 'unset !important',
+            width: 'calc(100vw - 32px)',
+            overflow: 'auto',
+            maxHeight: `calc(100vh - ${theme.mixins.toolbar.minHeight}) - 32px`,
+          }}
+        >
           {children}
         </Container>
       </Box>

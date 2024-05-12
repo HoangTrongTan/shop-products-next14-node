@@ -50,10 +50,12 @@ const AuthProvider = ({ children }: Props) => {
         await instanceAxios
           .get(CONFIG_API.AUTH.AUTH_ME)
           .then(async response => {
+            
             setLoading(false)
-            setUser({ ...response.data.userData })
+            setUser({ ...response.data.data})
           })
           .catch(() => {
+            
             clearLocalUserData()
             setUser(null)
             setLoading(false)

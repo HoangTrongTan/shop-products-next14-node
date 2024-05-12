@@ -29,3 +29,5 @@ const Home: NextPage<TProps> = () => {
 
 export default Home
 Home.getLayout = (page: ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>
+Home.authGuard = false; 
+Home.guestGuard = false;

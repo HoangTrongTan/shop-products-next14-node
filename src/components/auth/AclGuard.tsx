@@ -27,7 +27,13 @@ const AclGuard = (props: AclGuardProps) => {
   if (auth.user && !ability) {
     ability = buildAbilityFor(permisstionUser, aclAbilities.subject)
   }
-  console.log('ability', ability)
+  console.log('>>>[..OBJ..]', {
+    guestGuard,
+    authGuard,
+    ability: ability?.can(aclAbilities.action, aclAbilities.subject),
+    permisstionUser,
+    user: auth.user
+  })
   if (guestGuard || router.route === '/500' || router.route === '/404' || !authGuard) {
     if (ability && auth.user) {
       return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
@@ -38,6 +44,7 @@ const AclGuard = (props: AclGuardProps) => {
   if (ability && auth.user && ability.can(aclAbilities.action, aclAbilities.subject)) {
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
   }
+  
 
   return (
     <BlankLayout>
