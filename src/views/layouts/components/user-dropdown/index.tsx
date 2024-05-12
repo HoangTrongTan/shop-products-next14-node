@@ -4,24 +4,29 @@ import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import IconifyIcon from '../../../../components/Icon'
 import { useAuth } from 'src/hooks/useAuth'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
+import { useRouter } from 'next/router'
+import { ROUTE_CONFIG } from 'src/configs/route'
 
 const UserDropDown = () => {
   const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
   const open = Boolean(anchorEl)
+  const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+  const handleRedirectProfile = () => {
+    router.push(`/${ROUTE_CONFIG.MY_PROFILE}`)
   }
   return (
     <React.Fragment>
@@ -83,20 +88,8 @@ const UserDropDown = () => {
         <MenuItem onClick={handleClose}>
           {user?.email} {user?.middleName} {user?.lastName}
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>{/* <PersonAdd fontSize='small' /> */}</ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>{/* <Settings fontSize='small' /> */}</ListItemIcon>
-          Settings
+        <MenuItem onClick={handleRedirectProfile}>
+          <Avatar />{t('my_profile')}
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>{/* <Logout fontSize='small' /> */}</ListItemIcon>
