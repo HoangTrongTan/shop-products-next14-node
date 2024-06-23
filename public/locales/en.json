@@ -1,4 +1,26 @@
 {
-  "Account": "Account",
-  "my_profile": "My Profile"
+  "Account": "Tài khoản",
+  "My_profile":"Hồ sơ của tôi",
+  "Enter_your_email": "Nhập email của bạn",
+  "Role": "Nhóm vai trò",
+  "Enter_your_role": "Chọn vai trò của bạn",
+  "Full_name": "Họ và tên",
+  "Address": "Địa chỉ",
+  "City": "City",
+  "Phone_number": "Số điện thoại",
+  "Enter_your_city": "Chọn thành phố của bạn",
+  "Enter_your_full_name": "Nhập họ và tên",
+  "Enter_your_phone": "Nhập số điện thoại",
+  "Enter_your_address": "Nhập địa chỉ",
+  "Upload_avatar": "Tải ảnh đại diện",
+  "Change_avatar": "Thay đổi ảnh đại diện",
+  "Update": "Cập nhật",
+  "Manage_system": "Quản trị hệ thống",
+  "Name": "Name",
+  "Actions": "Actions",
+  "Create": "Create",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "Required_field": "The field is required",
+  "Create_role_success": "Created role success"
 }

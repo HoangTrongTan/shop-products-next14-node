@@ -12,6 +12,15 @@ import { t } from 'i18next'
 import Icon from 'src/components/Icon'
 import WrapperFileUpload from 'src/components/wrapper-file-upload'
 import { EMAIL_REG } from 'src/configs/regex'
+import { getAuthMe } from 'src/services/auth'
+import { convertBase64, separationFullName, toFullName } from 'src/utils'
+import { useTranslation } from 'react-i18next'
+import { AppDispatch, RootState } from 'src/stores'
+import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { updateAuthMeAsync } from 'src/stores/apps/auth/actions'
+import { resetInitialState } from 'src/stores/apps/auth'
+import Spinner from 'src/components/spinner'
 // import { useAuth } from 'src/hooks/useAuth'
 type TProps = {}
 
@@ -25,24 +34,44 @@ type TDefaultValue = {
 }
 
 const MyprofilePage: NextPage<TProps> = () => {
+  const { i18n } = useTranslation()
   // State
-  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [roleId, setRoleId] = useState('')
+  const dispatch: AppDispatch = useDispatch()
   const [avatar, setAvatar] = useState('')
-  // const [optionRoles, setOptionRoles] = useState<{ label: string; value: string }[]>([])
   const [isDisabledRole] = useState(false)
-  // const [optionCities, setOptionCities] = useState<{ label: string; value: string }[]>([])
+  //hoooks
+  const theme = useTheme()
+  //redux
+  const { isErrorUpdateMe, messageUpdateMe, isSuccessUpdateMe, isLoading } = useSelector(
+    (state: RootState) => state.auth
+  )
+
+  useEffect(() => {
+    fetchGetAuthMe()
+  }, [i18n.language])
+
+  useEffect(() => {
+    if (messageUpdateMe) {
+      if (isErrorUpdateMe) {
+        toast.error(messageUpdateMe)
+      } else if (isSuccessUpdateMe) {
+        toast.success(messageUpdateMe)
+      }
+      dispatch(resetInitialState())
+    }
+  }, [isErrorUpdateMe, isSuccessUpdateMe, messageUpdateMe])
+
   const schema = yup.object().shape({
     email: yup.string().required(t('Required_field')).matches(EMAIL_REG, 'The field is must email type'),
     fullName: yup.string().notRequired(),
     phoneNumber: yup.string().required(t('Required_field')).min(9, 'The phone number is min 9 number'),
     role: isDisabledRole ? yup.string().notRequired() : yup.string().required(t('Required_field')),
-    city: yup.string().notRequired(),
-    address: yup.string().notRequired()
+    address: yup.string().notRequired(),
+    city: yup.string().notRequired()
   })
-  // const { user } = useAuth()
-  // ** Hooks
-  // const { i18n } = useTranslation()
-  const theme = useTheme()
+
   const defaultValues: TDefaultValue = {
     email: '',
     address: '',
@@ -55,22 +84,64 @@ const MyprofilePage: NextPage<TProps> = () => {
     handleSubmit,
     control,
     formState: { errors },
-    // reset,
-    // watch
+    reset
   } = useForm({
     defaultValues,
     mode: 'onBlur',
     resolver: yupResolver(schema)
   })
-  useEffect(() => {
-    
-  },[])
+
+  const fetchGetAuthMe = async () => {
+    setLoading(true)
+    await getAuthMe()
+      .then(async response => {
+        setLoading(false)
+        const data = response?.data
+        console.log(data)
+        if (data) {
+          setRoleId(data?.role?._id)
+          setAvatar(data?.avatar)
+          reset({
+            email: data?.email,
+            address: data?.address,
+            city: data?.city,
+            phoneNumber: data?.phoneNumber,
+            role: data?.role?._id,
+            fullName: toFullName(data?.lastName, data?.middleName, data?.firstName, i18n.language)
+          })
+        }
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }
+
   // const onSubmit = (data: any) => {}
-  const onSubmit = () => {}
+  const onSubmit = (data: any) => {
+    const { firstName, lastName, middleName } = separationFullName(data?.fullName, i18n.language)
+    dispatch(
+      updateAuthMeAsync({
+        email: data?.email,
+        address: data?.address,
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName,
+        // city: data?.city,
+        phoneNumber: data?.phoneNumber,
+        fullName: data?.fullName,
+        avatar,
+        role: roleId,
+      })
+    )
+  }
   // const handleUploadAvatar = async (file: File) => {}
-  const handleUploadAvatar = async () => {}
+  const handleUploadAvatar = async (file: File) => {
+    const base64 = await convertBase64(file)
+    setAvatar(base64 as string)
+  }
   return (
-    <form autoComplete='off' noValidate>
+    <>
+      {loading || (isLoading && <Spinner />)}
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off' noValidate>
         <Grid container>
           <Grid
@@ -165,42 +236,19 @@ const MyprofilePage: NextPage<TProps> = () => {
                       rules={{
                         required: true
                       }}
-                      // render={({ field: { onChange, onBlur, value } }) => (
-                      render={() => (
-                        <div>
-                          <label
-                            style={{
-                              fontSize: '13px',
-                              marginBottom: '4px',
-                              display: 'block',
-                              color: errors?.role
-                                ? theme.palette.error.main
-                                : `rgba(${theme.palette.customColors.main}, 0.42)`
-                            }}
-                          >
-                            {t('Role')} <span style={{ color: theme.palette.error.main }}>*</span>
-                          </label>
-                          {/* <CustomSelect
-                            fullWidth
-                            onChange={onChange}
-                            options={optionRoles}
-                            error={Boolean(errors?.role)}
-                            onBlur={onBlur}
-                            value={value}
-                            placeholder={t('Enter_your_role')}
-                          />
-                          {errors?.role?.message && (
-                            <FormHelperText
-                              sx={{
-                                color: errors?.role
-                                  ? theme.palette.error.main
-                                  : `rgba(${theme.palette.customColors.main}, 0.42)`
-                              }}
-                            >
-                              {errors?.role?.message}
-                            </FormHelperText>
-                          )} */}
-                        </div>
+                      render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextField
+                          required
+                          fullWidth
+                          disabled
+                          label={'Nhóm vai trò'}
+                          onChange={onChange}
+                          onBlur={onBlur}
+                          value={value}
+                          placeholder={t('Enter_your_email')}
+                          error={Boolean(errors?.email)}
+                          helperText={errors?.email?.message}
+                        />
                       )}
                       name='role'
                     />
@@ -337,7 +385,7 @@ const MyprofilePage: NextPage<TProps> = () => {
           </Button>
         </Box>
       </form>
-    </form>
+    </>
   )
 }
 
