@@ -13,9 +13,11 @@ import authConfig from 'src/configs/auth'
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
 import { loginAuth, loginOut } from 'src/services/auth'
-import { CONFIG_API } from 'src/configs/api'
-import { clearLocalUserData, setLocalUserData } from 'src/helpers/storage'
+import { API_ENDPOINT } from 'src/configs/api'
+import { clearLocalUserData, setLocalUserData, setTemporaryToken } from 'src/helpers/storage'
 import instanceAxios from 'src/helpers/axios/inedx'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -38,20 +40,21 @@ const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
 
+  const { t } = useTranslation()
+
   // ** Hooks
   const router = useRouter()
 
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
       const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-      console.log('RES:::::', { storedToken })
       if (storedToken) {
         setLoading(true)
         await instanceAxios
-          .get(CONFIG_API.AUTH.AUTH_ME)
+          .get(API_ENDPOINT.AUTH.AUTH_ME)
           .then(async response => {
             setLoading(false)
-            setUser({ ...response.data.userData })
+            setUser({ ...response.data.data })
           })
           .catch(() => {
             clearLocalUserData()
@@ -73,20 +76,18 @@ const AuthProvider = ({ children }: Props) => {
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
     loginAuth({ email: params.email, password: params.password })
       .then(async response => {
-        params.rememberMe
-          ? setLocalUserData(
-              JSON.stringify(response.data.user),
-              response.data.access_token,
-              response.data.refresh_token
-            )
-          : null
+        if (params.rememberMe) {
+          setLocalUserData(JSON.stringify(response.data.user), response.data.access_token, response.data.refresh_token)
+        } else {
+          setTemporaryToken(response.data.access_token)
+        }
+        toast.success(t('Login_success'))
         const returnUrl = router.query.returnUrl
         setUser({ ...response.data.user })
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
 
         router.replace(redirectURL as string)
       })
-
       .catch(err => {
         if (errorCallback) errorCallback(err)
       })
@@ -94,7 +95,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogout = () => {
     loginOut().then(res => {
-      console.log(res);
+      console.log({ res });
       setUser(null)
       clearLocalUserData()
       router.push('/login')

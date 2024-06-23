@@ -23,6 +23,8 @@ import LoginDark from '/public/images/login-dark.png'
 import LoginLight from '/public/images/login-light.png'
 import Link from 'next/link'
 import { useAuth } from 'src/hooks/useAuth'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 type TProps = {}
 type TDefaultValues = {
@@ -33,6 +35,10 @@ const LoginPage: NextPage<TProps> = () => {
   const theme = useTheme()
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
+
+  // ** Translate
+  const { t } = useTranslation()
+
   const { login } = useAuth()
   const schema = yup
     .object()
@@ -47,7 +53,7 @@ const LoginPage: NextPage<TProps> = () => {
 
   const defaultValues: TDefaultValues = {
     email: 'admin@gmail.com',
-    password: '123456789Kha@'
+    password: '123456Kha@'
   }
 
   const {
@@ -61,10 +67,11 @@ const LoginPage: NextPage<TProps> = () => {
   })
 
   const onSubmit = (data: { email: string; password: string }) => {
-    // if(Object.keys(errors)?.length){
-    login({ ...data, rememberMe })
-    // }
-    console.log('DATA: ', data, errors)
+    if (!Object.keys(errors)?.length) {
+      login({ ...data, rememberMe }, (err: any) => {
+        if (err?.response?.data?.typeError === 'INVALID') toast.error(t('The_email_or_password_wrong'))
+      })
+    }
   }
 
   return (
