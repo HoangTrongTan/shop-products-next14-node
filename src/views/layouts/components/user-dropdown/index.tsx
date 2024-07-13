@@ -48,6 +48,10 @@ const UserDropDown = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const { user, logout } = useAuth()
   const open = Boolean(anchorEl)
+
+  // ** Redux
+  // const permissionUser = user?.role?.permissions ?? []
+
   const router = useRouter()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -59,6 +63,12 @@ const UserDropDown = () => {
     router.push(ROUTE_CONFIG.CHANGE_PASSWORD)
     handleClose()
   }
+
+  const handleNavigateManageSystem = () => {
+    router.push(ROUTE_CONFIG.DASHBOARD)
+    handleClose()
+  }
+
   const handleRedirectProfile = () => {
     router.push(`/${ROUTE_CONFIG.MY_PROFILE}`)
   }
@@ -151,6 +161,14 @@ const UserDropDown = () => {
         <MenuItem onClick={handleClose}>
           {user?.email} {user?.middleName} {user?.lastName}
         </MenuItem>
+        {/* {permissionUser.length > 0 && ( */}
+        <MenuItem onClick={handleNavigateManageSystem}>
+            <Avatar>
+              <Icon icon='arcticons:phone-manager' />
+            </Avatar>{' '}
+            {t('Manage_system')}
+          </MenuItem>
+        {/* )} */}
         <MenuItem onClick={handleRedirectProfile}>
           <Avatar />
           {t('my_profile')}

@@ -1,11 +1,12 @@
 import { Palette } from '@mui/material'
 import { Skin } from 'src/types/layouts'
+import { hexToRGBA } from 'src/utils/hex-to-rgba'
 
 const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
   // ** Vars
   const whiteColor = '#FFF'
-  const lightColor = '47, 43, 61'
-  const darkColor = '208, 212, 241'
+  const lightColor = '#2f2b3d'
+  const darkColor = '#d0d4f1'
   const darkPaperBgColor = '#2F3349'
   const mainColor = mode === 'light' ? lightColor : darkColor
 
@@ -89,23 +90,23 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       A700: '#616161'
     },
     text: {
-      primary: `rgba(${mainColor}, 0.78)`,
-      secondary: `rgba(${mainColor}, 0.68)`,
-      disabled: `rgba(${mainColor}, 0.42)`
+      primary: `${hexToRGBA(mainColor, 0.78)}`,
+      secondary: `${hexToRGBA(mainColor, 0.68)}`,
+      disabled: `${hexToRGBA(mainColor, 0.42)}`
     },
-    divider: `rgba(${mainColor}, 0.16)`,
+    divider: `${hexToRGBA(mainColor, 0.16)}`,
     background: {
       paper: mode === 'light' ? whiteColor : darkPaperBgColor,
       default: defaultBgColor()
     },
     action: {
-      active: `rgba(${mainColor}, 0.54)`,
-      hover: `rgba(${mainColor}, 0.04)`,
-      selected: `rgba(${mainColor}, 0.06)`,
+      active: `${hexToRGBA(mainColor, 0.54)}`,
+      hover: `${hexToRGBA(mainColor, 0.04)}`,
+      selected: `${hexToRGBA(mainColor, 0.06)}`,
       selectedOpacity: 0.06,
-      disabled: `rgba(${mainColor}, 0.26)`,
-      disabledBackground: `rgba(${mainColor}, 0.12)`,
-      focus: `rgba(${mainColor}, 0.12)`
+      disabled: `${hexToRGBA(mainColor, 0.26)}`,
+      disabledBackground: `${hexToRGBA(mainColor, 0.12)}`,
+      focus: `${hexToRGBA(mainColor, 0.12)}`
     }
   } as Palette
 }

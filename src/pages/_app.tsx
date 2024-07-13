@@ -37,7 +37,7 @@ import ReactHotToast from 'src/components/react-hot-toast'
 import { useSettings } from 'src/hooks/useSettings'
 import ThemeComponent from 'src/theme/ThemeComponent'
 import UserLayout from 'src/views/layouts/UserLayout'
-import { AxiosInterceptor } from 'src/helpers/axios/inedx'
+import { AxiosInterceptor } from 'src/helpers/axios'
 import NoGuard from 'src/components/auth/NoGuard'
 
 type ExtendedAppProps = AppProps & {

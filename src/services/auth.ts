@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from 'src/configs/api'
-import instanceAxios from 'src/helpers/axios/inedx'
+import instanceAxios from 'src/helpers/axios'
 import { TChangePassword, TLoginAuth, TRegisterAuth } from 'src/types/auth'
 
 export const loginAuth = async (data: TLoginAuth) => {
