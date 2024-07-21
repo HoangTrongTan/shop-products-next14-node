@@ -215,7 +215,6 @@ const ListVerticalLayout: NextPage<TProps> = ({ open }) => {
       ? [PERMISSIONS.DASHBOARD]
       : user?.role?.permissions
     : []
-
   const listVerticalItems = VerticalItems()
 
   const findParentActivePath = (items: TVertical[], activePath: string) => {

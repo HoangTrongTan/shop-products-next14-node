@@ -39,7 +39,7 @@ import { hexToRGBA } from 'src/utils/hex-to-rgba'
 import { resetInitialState } from 'src/stores/role'
 
 // ** Hooks
-// import { usePermission } from 'src/hooks/usePermission'
+import { usePermission } from 'src/hooks/usePermission'
 
 type TProps = {}
 
@@ -65,7 +65,7 @@ const RoleListPage: NextPage<TProps> = () => {
   const [isDisablePermission, setIsDisabledPermission] = useState(false)
 
   // ** Permission
-  // const { VIEW, UPDATE, DELETE, CREATE } = usePermission('SYSTEM.ROLE', ['CREATE', 'VIEW', 'UPDATE', 'DELETE'])
+  const { VIEW, UPDATE, DELETE, CREATE } = usePermission('SYSTEM.ROLE', ['CREATE', 'VIEW', 'UPDATE', 'DELETE'])
 
   // ** Translate
   const { t } = useTranslation()
@@ -140,7 +140,7 @@ const RoleListPage: NextPage<TProps> = () => {
             {!row?.permissions?.some((per: string) => ['ADMIN.GRANTED', 'BASIC.PUBLIC']?.includes(per)) ? (
               <>
                 <GridEdit
-                  // disabled={!UPDATE}
+                  disabled={!UPDATE}
                   onClick={() =>
                     setOpenCreateEdit({
                       open: true,
@@ -149,7 +149,7 @@ const RoleListPage: NextPage<TProps> = () => {
                   }
                 />
                 <GridDelete
-                  // disabled={!DELETE}
+                  disabled={!DELETE}
                   onClick={() =>
                     setOpenDeleteRole({
                       open: true,

@@ -9,24 +9,32 @@ import { useAuth } from 'src/hooks/useAuth'
 import NotAuthorized from 'src/pages/401'
 import BlankLayout from 'src/views/layouts/BlankLayout'
 import { AbilityContext } from '../acl/Can'
+import { PERMISSIONS } from 'src/configs/permission'
 
 interface AclGuardProps {
   children: ReactNode
   authGuard?: boolean
   guestGuard?: boolean
   aclAbilities: ACLObj
+  permission?: string[]
 }
 
 const AclGuard = (props: AclGuardProps) => {
   // ** Props
-  const { aclAbilities, children, guestGuard = false, authGuard = true } = props
+  const { aclAbilities, children, guestGuard = false, authGuard = true, permission } = props
   const auth = useAuth()
   const router = useRouter()
-  const permisstionUser = auth.user?.role?.permissions ?? []
   let ability: AppAbility
+  const permisstionUser = auth.user?.role?.permissions
+    ? auth.user?.role?.permissions?.includes(PERMISSIONS.BASIC)
+      ? [PERMISSIONS.DASHBOARD]
+      : auth.user?.role?.permissions
+    : []
+    
   if (auth.user && !ability) {
-    ability = buildAbilityFor(permisstionUser, aclAbilities.subject)
+    ability = buildAbilityFor(permisstionUser, permission)
   }
+
   console.log('>>>[..OBJ..]', {
     guestGuard,
     authGuard,
@@ -34,6 +42,7 @@ const AclGuard = (props: AclGuardProps) => {
     permisstionUser,
     user: auth.user
   })
+
   if (guestGuard || router.route === '/500' || router.route === '/404' || !authGuard) {
     if (ability && auth.user) {
       return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
@@ -44,7 +53,6 @@ const AclGuard = (props: AclGuardProps) => {
   if (ability && auth.user && ability.can(aclAbilities.action, aclAbilities.subject)) {
     return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
   }
-  
 
   return (
     <BlankLayout>

@@ -13,6 +13,6 @@ const Index: NextPage<TProps> = () => {
   return <RoleListPage />
 }
 
-// Index.permission = [PERMISSIONS.SYSTEM.ROLE.VIEW]
+Index.permission = [PERMISSIONS.SYSTEM.ROLE.VIEW]
 export default Index
 

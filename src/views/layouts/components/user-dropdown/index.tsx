@@ -50,7 +50,7 @@ const UserDropDown = () => {
   const open = Boolean(anchorEl)
 
   // ** Redux
-  // const permissionUser = user?.role?.permissions ?? []
+  const permissionUser = user?.role?.permissions ?? []
 
   const router = useRouter()
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -161,14 +161,14 @@ const UserDropDown = () => {
         <MenuItem onClick={handleClose}>
           {user?.email} {user?.middleName} {user?.lastName}
         </MenuItem>
-        {/* {permissionUser.length > 0 && ( */}
-        <MenuItem onClick={handleNavigateManageSystem}>
+        {permissionUser.length > 0 && (
+          <MenuItem onClick={handleNavigateManageSystem}>
             <Avatar>
               <Icon icon='arcticons:phone-manager' />
             </Avatar>{' '}
             {t('Manage_system')}
           </MenuItem>
-        {/* )} */}
+        )}
         <MenuItem onClick={handleRedirectProfile}>
           <Avatar />
           {t('my_profile')}
