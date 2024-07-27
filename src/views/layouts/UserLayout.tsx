@@ -1,8 +1,5 @@
 import { NextPage } from 'next'
 import { ReactNode } from 'react'
-type TProps = {
-  children: ReactNode
-}
 
 import * as React from 'react'
 import Box from '@mui/material/Box'
@@ -11,41 +8,22 @@ import Container from '@mui/material/Container'
 
 import HorizontalLayout from './HorizontalLayout'
 import VerticalLayout from './VerticalLayout'
+import { CssBaseline, styled, useTheme } from '@mui/material'
 
-// const drawerWidth: number = 240
-
-// const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(({ theme, open }) => ({
-//   '& .MuiDrawer-paper': {
-//     position: 'relative',
-//     whiteSpace: 'nowrap',
-//     width: drawerWidth,
-//     transition: theme.transitions.create('width', {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.enteringScreen
-//     }),
-//     boxSizing: 'border-box',
-//     ...(!open && {
-//       overflowX: 'hidden',
-//       transition: theme.transitions.create('width', {
-//         easing: theme.transitions.easing.sharp,
-//         duration: theme.transitions.duration.leavingScreen
-//       }),
-//       width: theme.spacing(7),
-//       [theme.breakpoints.up('sm')]: {
-//         width: theme.spacing(9)
-//       }
-//     })
-//   }
-// }))
+type TProps = {
+  children: ReactNode
+}
 
 const UserLayout: NextPage<TProps> = ({ children }) => {
   const [open, setOpen] = React.useState(true)
   const toggleDrawer = () => {
     setOpen(!open)
   }
+  const theme = useTheme()
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
       <VerticalLayout toggleDrawer={toggleDrawer} open={open} />
       <HorizontalLayout toggleDrawer={toggleDrawer} open={open} />
       <Box
@@ -59,7 +37,18 @@ const UserLayout: NextPage<TProps> = ({ children }) => {
         }}
       >
         <Toolbar />
-        <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+        <Container
+          sx={{
+            m: 4,
+            width: `calc(100% - 32px)`,
+            maxWidth: `calc(100% - 32px) !important`,
+            overflow: 'auto',
+            maxHeight: `calc(100vh - ${theme.mixins.toolbar.minHeight}px - 32px)`,
+            height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px - 32px)`,
+            padding: '0 !important',
+            borderRadius: '15px'
+          }}
+        >
           {children}
         </Container>
       </Box>

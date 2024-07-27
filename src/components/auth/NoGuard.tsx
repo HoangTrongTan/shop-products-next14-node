@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // ** React Imports
-import { useRouter } from 'next/router'
 import { ReactElement, ReactNode } from 'react'
 
 // ** Types
-import { buildAbilityFor, type ACLObj, type AppAbility } from 'src/configs/acl'
 import { useAuth } from 'src/hooks/useAuth'
-import NotAuthorized from 'src/pages/401'
-import BlankLayout from 'src/views/layouts/BlankLayout'
-import { AbilityContext } from '../acl/Can'
 
 interface NoGuardProps {
   children: ReactNode

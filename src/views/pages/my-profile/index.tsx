@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, Box, Button, Grid, IconButton, InputLabel, useTheme } from '@mui/material'
+import { Avatar, Box, Button, FormHelperText, Grid, IconButton, InputLabel, useTheme } from '@mui/material'
 import * as yup from 'yup'
 import { NextPage } from 'next'
 import CustomTextField from 'src/components/text-field'
@@ -18,9 +18,12 @@ import { useTranslation } from 'react-i18next'
 import { AppDispatch, RootState } from 'src/stores'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
-import { updateAuthMeAsync } from 'src/stores/apps/auth/actions'
-import { resetInitialState } from 'src/stores/apps/auth'
+import { updateAuthMeAsync } from 'src/stores/auth/actions'
+import { resetInitialState } from 'src/stores/auth'
 import Spinner from 'src/components/spinner'
+import CustomSelect from 'src/components/custom-select'
+import { getAllRoles } from 'src/services/role'
+import { getAllCities } from 'src/services/city'
 // import { useAuth } from 'src/hooks/useAuth'
 type TProps = {}
 
@@ -35,18 +38,40 @@ type TDefaultValue = {
 
 const MyprofilePage: NextPage<TProps> = () => {
   const { i18n } = useTranslation()
+  const dispatch: AppDispatch = useDispatch()
   // State
   const [loading, setLoading] = useState(false)
-  const [roleId, setRoleId] = useState('')
-  const dispatch: AppDispatch = useDispatch()
   const [avatar, setAvatar] = useState('')
-  const [isDisabledRole] = useState(false)
+  const [optionRoles, setOptionRoles] = useState<{ label: string; value: string }[]>([])
+  const [isDisabledRole, setIsDisabledRole] = useState(false)
+  const [optionCities, setOptionCities] = useState<{ label: string; value: string }[]>([])
+
   //hoooks
   const theme = useTheme()
   //redux
   const { isErrorUpdateMe, messageUpdateMe, isSuccessUpdateMe, isLoading } = useSelector(
     (state: RootState) => state.auth
   )
+  // fetch api
+  const fetchAllRoles = async () => {
+    setLoading(true)
+    await getAllRoles({ params: { limit: -1, page: -1 } })
+      .then(res => {
+        const data = res?.data.roles
+        if (data) {
+          setOptionRoles(data?.map((item: { name: string; _id: string }) => ({ label: item.name, value: item._id })))
+        }
+        setLoading(false)
+      })
+      .catch(e => {
+        setLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    fetchAllRoles()
+    fetchAllCities()
+  }, [])
 
   useEffect(() => {
     fetchGetAuthMe()
@@ -97,9 +122,8 @@ const MyprofilePage: NextPage<TProps> = () => {
       .then(async response => {
         setLoading(false)
         const data = response?.data
-        console.log(data)
         if (data) {
-          setRoleId(data?.role?._id)
+          setIsDisabledRole(!data?.role?.permissions?.length)
           setAvatar(data?.avatar)
           reset({
             email: data?.email,
@@ -112,6 +136,21 @@ const MyprofilePage: NextPage<TProps> = () => {
         }
       })
       .catch(() => {
+        setLoading(false)
+      })
+  }
+
+  const fetchAllCities = async () => {
+    setLoading(true)
+    await getAllCities({ params: { limit: -1, page: -1 } })
+      .then(res => {
+        const data = res?.data.cities
+        if (data) {
+          setOptionCities(data?.map((item: { name: string; _id: string }) => ({ label: item.name, value: item._id })))
+        }
+        setLoading(false)
+      })
+      .catch(e => {
         setLoading(false)
       })
   }
@@ -130,7 +169,7 @@ const MyprofilePage: NextPage<TProps> = () => {
         phoneNumber: data?.phoneNumber,
         fullName: data?.fullName,
         avatar,
-        role: roleId,
+        role: data.role
       })
     )
   }
@@ -237,18 +276,40 @@ const MyprofilePage: NextPage<TProps> = () => {
                         required: true
                       }}
                       render={({ field: { onChange, onBlur, value } }) => (
-                        <CustomTextField
-                          required
-                          fullWidth
-                          disabled
-                          label={'Nhóm vai trò'}
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          value={value}
-                          placeholder={t('Enter_your_email')}
-                          error={Boolean(errors?.email)}
-                          helperText={errors?.email?.message}
-                        />
+                        <div>
+                          <label
+                            style={{
+                              fontSize: '13px',
+                              marginBottom: '4px',
+                              display: 'block',
+                              color: errors?.role
+                                ? theme.palette.error.main
+                                : `rgba(${theme.palette.customColors.main}, 0.42)`
+                            }}
+                          >
+                            {t('Role')} <span style={{ color: theme.palette.error.main }}>*</span>
+                          </label>
+                          <CustomSelect
+                            fullWidth
+                            onChange={onChange}
+                            options={optionRoles}
+                            error={Boolean(errors?.role)}
+                            onBlur={onBlur}
+                            value={value}
+                            placeholder={t('Enter_your_role')}
+                          />
+                          {errors?.role?.message && (
+                            <FormHelperText
+                              sx={{
+                                color: errors?.role
+                                  ? theme.palette.error.main
+                                  : `rgba(${theme.palette.customColors.main}, 0.42)`
+                              }}
+                            >
+                              {errors?.role?.message}
+                            </FormHelperText>
+                          )}
+                        </div>
                       )}
                       name='role'
                     />
@@ -308,8 +369,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                   <Controller
                     name='city'
                     control={control}
-                    // render={({ field: { onChange, onBlur, value } }) => (
-                    render={() => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <Box>
                         <InputLabel
                           sx={{
@@ -323,7 +383,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                         >
                           {t('City')}
                         </InputLabel>
-                        {/* <CustomSelect
+                        <CustomSelect
                           fullWidth
                           onChange={onChange}
                           options={optionCities}
@@ -342,7 +402,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                           >
                             {errors?.city?.message}
                           </FormHelperText>
-                        )} */}
+                        )} 
                       </Box>
                     )}
                   />

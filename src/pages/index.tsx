@@ -1,15 +1,11 @@
 'use client'
 import Head from 'next/head'
-import Button from '@mui/material/Button'
-import CustomTextField from 'src/components/text-field'
-import { Box } from '@mui/material'
-import Link from 'next/link'
-import { NextPage } from 'next'
 import { ReactNode } from 'react'
+
+// layouts
 import LayoutNotApp from 'src/views/layouts/LayoutNotApp'
 
-type TProps = {}
-const Home: NextPage<TProps> = () => {
+export default function Home() {
   return (
     <>
       <Head>
@@ -18,16 +14,10 @@ const Home: NextPage<TProps> = () => {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Button variant='contained'>Hello world updated</Button>
-      <Box sx={{ margin: 6, width: '200%' }}>
-        <CustomTextField id='demo-helper-text-misaligned-no-helper' label='Uncontrolled' />
-        <Link href={'/login'}>pageLogin</Link>
-      </Box>
     </>
   )
 }
 
-export default Home
 Home.getLayout = (page: ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>
-Home.authGuard = false; 
-Home.guestGuard = false;
+Home.guestGuard = false
+Home.authGuard = false

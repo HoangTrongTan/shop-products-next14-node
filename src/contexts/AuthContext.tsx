@@ -12,10 +12,10 @@ import authConfig from 'src/configs/auth'
 
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
-import { loginAuth, loginOut } from 'src/services/auth'
+import { loginAuth, logoutAuth } from 'src/services/auth'
 import { API_ENDPOINT } from 'src/configs/api'
 import { clearLocalUserData, setLocalUserData, setTemporaryToken } from 'src/helpers/storage'
-import instanceAxios from 'src/helpers/axios/inedx'
+import instanceAxios from 'src/helpers/axios'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
@@ -94,7 +94,7 @@ const AuthProvider = ({ children }: Props) => {
   }
 
   const handleLogout = () => {
-    loginOut().then(res => {
+    logoutAuth().then(res => {
       console.log({ res });
       setUser(null)
       clearLocalUserData()
