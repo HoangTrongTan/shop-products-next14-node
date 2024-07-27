@@ -1,19 +1,18 @@
 // ** Import Next
 import { NextPage } from 'next'
 
-// ** Pages
-import ProductListPage from 'src/views/pages/manage-product/product/ProductList'
-
 // ** Config
 import { PERMISSIONS } from 'src/configs/permission'
 
+// ** Pages
+import PaymentTypeListPage from 'src/views/pages/settings/payment-type/PaymentTypeList'
 
 type TProps = {}
 
 const Index: NextPage<TProps> = () => {
-  return <ProductListPage />
+  return <PaymentTypeListPage />
 }
 
-Index.permission = [PERMISSIONS.MANAGE_PRODUCT.PRODUCT.VIEW]
+// Index.permission = [PERMISSIONS.SETTING.PAYMENT_TYPE.VIEW]
 export default Index
 

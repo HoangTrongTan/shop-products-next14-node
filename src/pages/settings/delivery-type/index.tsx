@@ -4,15 +4,15 @@ import { NextPage } from 'next'
 // ** Config
 import { PERMISSIONS } from 'src/configs/permission'
 
-// ** views
-// import ReviewListPage from 'src/views/pages/manage-order/reviews/ReviewList'
+// ** Pages
+import DeliveryTypeListPage from 'src/views/pages/settings/delivery-type/DeliveryTypeList'
 
 type TProps = {}
 
 const Index: NextPage<TProps> = () => {
-  // return <ReviewListPage />
-  return <h1>ReviewListPage</h1>  
+  return <DeliveryTypeListPage />
 }
 
+// Index.permission = [PERMISSIONS.SETTING.DELIVERY_TYPE.VIEW]
 export default Index
 

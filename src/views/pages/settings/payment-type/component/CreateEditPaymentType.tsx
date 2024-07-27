@@ -11,20 +11,20 @@ import * as yup from 'yup'
 import { Box, Button, FormHelperText, Grid, IconButton, Typography, useTheme } from '@mui/material'
 
 // ** Component
-// import Icon from 'src/components/Icon'
-// import CustomModal from 'src/components/custom-modal'
-// import Spinner from 'src/components/spinner'
-// import CustomTextField from 'src/components/text-field'
+import Icon from 'src/components/Icon'
+import CustomModal from 'src/components/custom-modal'
+import Spinner from 'src/components/spinner'
+import CustomTextField from 'src/components/text-field'
 
-// // ** Services
-// import { getDetailsPaymentType } from 'src/services/payment-type'
+// ** Services
+import { getDetailsPaymentType } from 'src/services/payment-type'
 
-// // ** Redux
-// import { AppDispatch } from 'src/stores'
-// import { useDispatch } from 'react-redux'
-// import { createPaymentTypeAsync, updatePaymentTypeAsync } from 'src/stores/payment-type/actions'
-// import CustomSelect from 'src/components/custom-select'
-// import { PAYMENT_TYPES } from 'src/configs/payment'
+// ** Redux
+import { AppDispatch } from 'src/stores'
+import { useDispatch } from 'react-redux'
+import { createPaymentTypeAsync, updatePaymentTypeAsync } from 'src/stores/payment-type/actions'
+import CustomSelect from 'src/components/custom-select'
+import { PAYMENT_TYPES } from 'src/configs/payment'
 
 interface TCreateEditPaymentType {
   open: boolean
@@ -40,7 +40,7 @@ type TDefaultValue = {
 const CreateEditPaymentType = (props: TCreateEditPaymentType) => {
   // State
   const [loading, setLoading] = useState(false)
-  // const ObjectPaymentType = PAYMENT_TYPES()
+  const ObjectPaymentType = PAYMENT_TYPES()
 
   // ** Props
   const { open, onClose, idPaymentType } = props
@@ -50,7 +50,7 @@ const CreateEditPaymentType = (props: TCreateEditPaymentType) => {
   const { t, i18n } = useTranslation()
 
   // ** Redux
-  // const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   const schema = yup.object().shape({
     name: yup.string().required(t('Required_field')),
@@ -74,61 +74,61 @@ const CreateEditPaymentType = (props: TCreateEditPaymentType) => {
   })
 
   // handle
-  // const onSubmit = (data: TDefaultValue) => {
-  //   if (!Object.keys(errors).length) {
-  //     if (idPaymentType) {
-  //       // update
-  //       dispatch(
-  //         updatePaymentTypeAsync({
-  //           name: data.name,
-  //           type: data.type,
-  //           id: idPaymentType
-  //         })
-  //       )
-  //     } else {
-  //       dispatch(
-  //         createPaymentTypeAsync({
-  //           name: data.name,
-  //           type: data.type,
-  //         })
-  //       )
-  //     }
-  //   }
-  // }
+  const onSubmit = (data: TDefaultValue) => {
+    if (!Object.keys(errors).length) {
+      if (idPaymentType) {
+        // update
+        dispatch(
+          updatePaymentTypeAsync({
+            name: data.name,
+            type: data.type,
+            id: idPaymentType
+          })
+        )
+      } else {
+        dispatch(
+          createPaymentTypeAsync({
+            name: data.name,
+            type: data.type,
+          })
+        )
+      }
+    }
+  }
 
-  // // fetch
-  // const fetchDetailsPaymentType = async (id: string) => {
-  //   setLoading(true)
-  //   await getDetailsPaymentType(id)
-  //     .then(res => {
-  //       const data = res.data
-  //       if (data) {
-  //         reset({
-  //           name: data?.name,
-  //           type: data?.type,
-  //         })
-  //       }
-  //       setLoading(false)
-  //     })
-  //     .catch(e => {
-  //       setLoading(false)
-  //     })
-  // }
+  // fetch
+  const fetchDetailsPaymentType = async (id: string) => {
+    setLoading(true)
+    await getDetailsPaymentType(id)
+      .then(res => {
+        const data = res.data
+        if (data) {
+          reset({
+            name: data?.name,
+            type: data?.type,
+          })
+        }
+        setLoading(false)
+      })
+      .catch(e => {
+        setLoading(false)
+      })
+  }
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     reset({
-  //       ...defaultValues
-  //     })
-  //   } else if (idPaymentType && open) {
-  //     fetchDetailsPaymentType(idPaymentType)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [open, idPaymentType])
+  useEffect(() => {
+    if (!open) {
+      reset({
+        ...defaultValues
+      })
+    } else if (idPaymentType && open) {
+      fetchDetailsPaymentType(idPaymentType)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, idPaymentType])
 
   return (
     <>
-      {/* {loading && <Spinner />}
+      {loading && <Spinner />}
       <CustomModal open={open} onClose={onClose}>
         <Box
           sx={{
@@ -233,7 +233,7 @@ const CreateEditPaymentType = (props: TCreateEditPaymentType) => {
             </Box>
           </form>
         </Box>
-      </CustomModal> */}
+      </CustomModal>
     </>
   )
 }

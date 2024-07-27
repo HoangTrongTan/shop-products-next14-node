@@ -10,20 +10,20 @@ import * as yup from 'yup'
 // ** Mui
 import { Box, Button, Grid, IconButton, Typography, useTheme } from '@mui/material'
 
-// // ** Component
-// import Icon from 'src/components/Icon'
-// import CustomModal from 'src/components/custom-modal'
-// import Spinner from 'src/components/spinner'
-// import CustomTextField from 'src/components/text-field'
+// ** Component
+import Icon from 'src/components/Icon'
+import CustomModal from 'src/components/custom-modal'
+import Spinner from 'src/components/spinner'
+import CustomTextField from 'src/components/text-field'
 
-// // ** Services
-// import { getDetailsCity } from 'src/services/city'
+// ** Services
+import { getDetailsCity } from 'src/services/city'
 
-// // ** Redux
-// import { AppDispatch } from 'src/stores'
-// import { useDispatch } from 'react-redux'
-// import { getAllRoles } from 'src/services/role'
-// import { createCityAsync, updateCityAsync } from 'src/stores/city/actions'
+// ** Redux
+import { AppDispatch } from 'src/stores'
+import { useDispatch } from 'react-redux'
+import { getAllRoles } from 'src/services/role'
+import { createCityAsync, updateCityAsync } from 'src/stores/city/actions'
 
 interface TCreateEditCity {
   open: boolean
@@ -47,7 +47,7 @@ const CreateEditCity = (props: TCreateEditCity) => {
   const { t, i18n } = useTranslation()
 
   // ** Redux
-  // const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   const schema = yup.object().shape({
     name: yup.string().required(t('Required_field'))
@@ -69,58 +69,58 @@ const CreateEditCity = (props: TCreateEditCity) => {
   })
 
   // handle
-  // const onSubmit = (data: TDefaultValue) => {
-  //   if (!Object.keys(errors).length) {
-  //     if (idCity) {
-  //       // update
-  //       dispatch(
-  //         updateCityAsync({
-  //           name: data.name,
-  //           id: idCity
-  //         })
-  //       )
-  //     } else {
-  //       dispatch(
-  //         createCityAsync({
-  //           name: data.name
-  //         })
-  //       )
-  //     }
-  //   }
-  // }
+  const onSubmit = (data: TDefaultValue) => {
+    if (!Object.keys(errors).length) {
+      if (idCity) {
+        // update
+        dispatch(
+          updateCityAsync({
+            name: data.name,
+            id: idCity
+          })
+        )
+      } else {
+        dispatch(
+          createCityAsync({
+            name: data.name
+          })
+        )
+      }
+    }
+  }
 
-  // // fetch
-  // const fetchDetailsCity = async (id: string) => {
-  //   setLoading(true)
-  //   await getDetailsCity(id)
-  //     .then(res => {
-  //       const data = res.data
-  //       if (data) {
-  //         reset({
-  //           name: data?.name
-  //         })
-  //       }
-  //       setLoading(false)
-  //     })
-  //     .catch(e => {
-  //       setLoading(false)
-  //     })
-  // }
+  // fetch
+  const fetchDetailsCity = async (id: string) => {
+    setLoading(true)
+    await getDetailsCity(id)
+      .then(res => {
+        const data = res.data
+        if (data) {
+          reset({
+            name: data?.name
+          })
+        }
+        setLoading(false)
+      })
+      .catch(e => {
+        setLoading(false)
+      })
+  }
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     reset({
-  //       ...defaultValues
-  //     })
-  //   } else if (idCity && open) {
-  //     fetchDetailsCity(idCity)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [open, idCity])
+  useEffect(() => {
+    if (!open) {
+      reset({
+        ...defaultValues
+      })
+    } else if (idCity && open) {
+      fetchDetailsCity(idCity)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, idCity])
 
   return (
     <>
-      {/* {loading && <Spinner />}
+      {loading && <Spinner />}
       <CustomModal open={open} onClose={onClose}>
         <Box
           sx={{
@@ -171,7 +171,7 @@ const CreateEditCity = (props: TCreateEditCity) => {
             </Box>
           </form>
         </Box>
-      </CustomModal> */}
+      </CustomModal>
     </>
   )
 }

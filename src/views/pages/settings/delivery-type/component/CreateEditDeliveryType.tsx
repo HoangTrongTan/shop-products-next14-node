@@ -10,19 +10,19 @@ import * as yup from 'yup'
 // ** Mui
 import { Box, Button, Grid, IconButton, Typography, useTheme } from '@mui/material'
 
-// // ** Component
-// import Icon from 'src/components/Icon'
-// import CustomModal from 'src/components/custom-modal'
-// import Spinner from 'src/components/spinner'
-// import CustomTextField from 'src/components/text-field'
+// ** Component
+import Icon from 'src/components/Icon'
+import CustomModal from 'src/components/custom-modal'
+import Spinner from 'src/components/spinner'
+import CustomTextField from 'src/components/text-field'
 
-// // ** Services
-// import { getDetailsDeliveryType } from 'src/services/delivery-type'
+// ** Services
+import { getDetailsDeliveryType } from 'src/services/delivery-type'
 
-// // ** Redux
-// import { AppDispatch } from 'src/stores'
-// import { useDispatch } from 'react-redux'
-// import { createDeliveryTypeAsync, updateDeliveryTypeAsync } from 'src/stores/delivery-type/actions'
+// ** Redux
+import { AppDispatch } from 'src/stores'
+import { useDispatch } from 'react-redux'
+import { createDeliveryTypeAsync, updateDeliveryTypeAsync } from 'src/stores/delivery-type/actions'
 
 interface TCreateEditDeliveryType {
   open: boolean
@@ -47,7 +47,7 @@ const CreateEditDeliveryType = (props: TCreateEditDeliveryType) => {
   const { t, i18n } = useTranslation()
 
   // ** Redux
-  // const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   const schema = yup.object().shape({
     name: yup.string().required(t('Required_field')),
@@ -76,61 +76,61 @@ const CreateEditDeliveryType = (props: TCreateEditDeliveryType) => {
   })
 
   // handle
-  // const onSubmit = (data: TDefaultValue) => {
-  //   if (!Object.keys(errors).length) {
-  //     if (idDeliveryType) {
-  //       // update
-  //       dispatch(
-  //         updateDeliveryTypeAsync({
-  //           name: data.name,
-  //           price: data.price,
-  //           id: idDeliveryType
-  //         })
-  //       )
-  //     } else {
-  //       dispatch(
-  //         createDeliveryTypeAsync({
-  //           name: data.name,
-  //           price: data.price
-  //         })
-  //       )
-  //     }
-  //   }
-  // }
+  const onSubmit = (data: TDefaultValue) => {
+    if (!Object.keys(errors).length) {
+      if (idDeliveryType) {
+        // update
+        dispatch(
+          updateDeliveryTypeAsync({
+            name: data.name,
+            price: data.price,
+            id: idDeliveryType
+          })
+        )
+      } else {
+        dispatch(
+          createDeliveryTypeAsync({
+            name: data.name,
+            price: data.price
+          })
+        )
+      }
+    }
+  }
 
-  // // fetch
-  // const fetchDetailsDeliveryType = async (id: string) => {
-  //   setLoading(true)
-  //   await getDetailsDeliveryType(id)
-  //     .then(res => {
-  //       const data = res.data
-  //       if (data) {
-  //         reset({
-  //           name: data?.name,
-  //           price: data?.price
-  //         })
-  //       }
-  //       setLoading(false)
-  //     })
-  //     .catch(e => {
-  //       setLoading(false)
-  //     })
-  // }
+  // fetch
+  const fetchDetailsDeliveryType = async (id: string) => {
+    setLoading(true)
+    await getDetailsDeliveryType(id)
+      .then(res => {
+        const data = res.data
+        if (data) {
+          reset({
+            name: data?.name,
+            price: data?.price
+          })
+        }
+        setLoading(false)
+      })
+      .catch(e => {
+        setLoading(false)
+      })
+  }
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     reset({
-  //       ...defaultValues
-  //     })
-  //   } else if (idDeliveryType && open) {
-  //     fetchDetailsDeliveryType(idDeliveryType)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [open, idDeliveryType])
+  useEffect(() => {
+    if (!open) {
+      reset({
+        ...defaultValues
+      })
+    } else if (idDeliveryType && open) {
+      fetchDetailsDeliveryType(idDeliveryType)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, idDeliveryType])
 
   return (
     <>
-      {/* {loading && <Spinner />}
+      {loading && <Spinner />}
       <CustomModal open={open} onClose={onClose}>
         <Box
           sx={{
@@ -207,7 +207,7 @@ const CreateEditDeliveryType = (props: TCreateEditDeliveryType) => {
             </Box>
           </form>
         </Box>
-      </CustomModal> */}
+      </CustomModal>
     </>
   )
 }

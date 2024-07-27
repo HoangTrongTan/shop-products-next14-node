@@ -4,17 +4,15 @@ import { NextPage } from 'next'
 // ** Config
 import { PERMISSIONS } from 'src/configs/permission'
 
-// ** Page
-import UserListPage from 'src/views/pages/system/user/UserList'
-
-// ** views
+// ** Pages
+import CityListPage from 'src/views/pages/settings/city/CityList'
 
 type TProps = {}
 
 const Index: NextPage<TProps> = () => {
-  return <UserListPage />
+  return <CityListPage/>
 }
 
-Index.permission = [PERMISSIONS.SYSTEM.USER.VIEW]
+// Index.permission = [PERMISSIONS.SETTING.CITY.VIEW]
 export default Index
 

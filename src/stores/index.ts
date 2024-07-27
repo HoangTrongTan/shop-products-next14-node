@@ -6,6 +6,7 @@ import user from 'src/stores/user'
 import auth from 'src/stores/auth'
 import product from 'src/stores/product'
 import role from 'src/stores/role'
+import city from 'src/stores/city'
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     auth,
     product,
     role,
+    city,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
