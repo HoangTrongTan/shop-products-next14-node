@@ -1,19 +1,42 @@
-import * as React from 'react'
+// ** React
+import React, { useEffect } from 'react'
+
+// ** Next
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+
+// ** Mui Imports
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import IconifyIcon from '../../../../components/Icon'
-import { useAuth } from 'src/hooks/useAuth'
-import Image from 'next/image'
-import { useTranslation } from 'react-i18next'
-import { useRouter } from 'next/router'
-import { ROUTE_CONFIG } from 'src/configs/route'
-import { Badge, Divider, Typography, styled } from '@mui/material'
-import { toFullName } from 'src/utils'
+import { Badge, Typography, styled } from '@mui/material'
+
+// ** Components
 import Icon from 'src/components/Icon'
+
+// ** Hooks
+import { useAuth } from 'src/hooks/useAuth'
+
+// ** Translate
+import { useTranslation } from 'react-i18next'
+
+// ** config
+import { ROUTE_CONFIG } from 'src/configs/route'
+
+// ** Utils
+import { toFullName } from 'src/utils'
+
+// ** Redux
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/stores'
+
+type TProps = {}
+
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     backgroundColor: '#44b700',
@@ -42,23 +65,36 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     }
   }
 }))
-const UserDropDown = () => {
+
+const UserDropdown = (props: TProps) => {
   // ** Translation
   const { t, i18n } = useTranslation()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const { user, logout } = useAuth()
-  const open = Boolean(anchorEl)
+
+  const { user, logout, setUser } = useAuth()
 
   // ** Redux
+  const { userData } = useSelector((state: RootState) => state.auth)
   const permissionUser = user?.role?.permissions ?? []
 
+  const open = Boolean(anchorEl)
+
   const router = useRouter()
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const handleNavigateMyProfile = () => {
+    router.push(ROUTE_CONFIG.MY_PROFILE)
+    handleClose()
+  }
+
   const handleNavigateChangePassword = () => {
     router.push(ROUTE_CONFIG.CHANGE_PASSWORD)
     handleClose()
@@ -69,9 +105,23 @@ const UserDropDown = () => {
     handleClose()
   }
 
-  const handleRedirectProfile = () => {
-    router.push(`/${ROUTE_CONFIG.MY_PROFILE}`)
+  const handleNavigateMyProduct = () => {
+    router.push(ROUTE_CONFIG.MY_PRODUCT)
+    handleClose()
   }
+
+  const handleNavigateMyOrder = () => {
+    router.push(ROUTE_CONFIG.MY_ORDER)
+    handleClose()
+  }
+
+  useEffect(() => {
+    if (userData) {
+      setUser({ ...userData })
+    }
+  }, [userData])
+console.log("useruser", {user})
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -84,13 +134,25 @@ const UserDropDown = () => {
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
-            {user?.avatar ? (
+            <StyledBadge overlap='circular' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant='dot'>
               <Avatar sx={{ width: 32, height: 32 }}>
-                <Image src={user?.avatar || ''} alt='avartar' width={100} height={100} />
+                {user?.avatar ? (
+                  <Image
+                    src={user?.avatar || ''}
+                    alt='avatar'
+                    width={0}
+                    height={0}
+                    style={{
+                      height: '32px',
+                      width: '32px',
+                      objectFit: 'cover'
+                    }}
+                  />
+                ) : (
+                  <Icon icon='ph:user-thin' />
+                )}
               </Avatar>
-            ) : (
-              <IconifyIcon icon={'ri:user-fill'} />
-            )}
+            </StyledBadge>
           </IconButton>
         </Tooltip>
       </Box>
@@ -99,7 +161,7 @@ const UserDropDown = () => {
         id='account-menu'
         open={open}
         onClose={handleClose}
-        onClick={handleClick}
+        onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -151,16 +213,12 @@ const UserDropDown = () => {
           </StyledBadge>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography component='span'>
-              {toFullName(user?.lastName || '', user?.middleName || '', user?.firstName || '', i18n.language) ||
-                user?.email}
+              {toFullName(user?.lastName || '', user?.middleName || '', user?.firstName || '', i18n.language) || user?.email}
             </Typography>
             <Typography component='span'>{user?.role?.name}</Typography>
           </Box>
         </Box>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          {user?.email} {user?.middleName} {user?.lastName}
-        </MenuItem>
         {permissionUser.length > 0 && (
           <MenuItem onClick={handleNavigateManageSystem}>
             <Avatar>
@@ -169,9 +227,23 @@ const UserDropDown = () => {
             {t('Manage_system')}
           </MenuItem>
         )}
-        <MenuItem onClick={handleRedirectProfile}>
-          <Avatar />
-          {t('my_profile')}
+        <MenuItem onClick={handleNavigateMyProfile}>
+          <Avatar>
+            <Icon icon='ph:user-thin' />
+          </Avatar>{' '}
+          {t('My_profile')}
+        </MenuItem>
+        <MenuItem onClick={handleNavigateMyProduct}>
+          <Avatar>
+            <Icon icon='tabler:brand-producthunt' />
+          </Avatar>{' '}
+          {t('My_product')}
+        </MenuItem>
+        <MenuItem onClick={handleNavigateMyOrder}>
+          <Avatar>
+            <Icon icon='material-symbols-light:order-approve-outline-rounded' />
+          </Avatar>{' '}
+          {t('My_order')}
         </MenuItem>
         <MenuItem onClick={handleNavigateChangePassword}>
           <Avatar sx={{ backgroundColor: 'transparent' }}>
@@ -190,4 +262,4 @@ const UserDropDown = () => {
   )
 }
 
-export default UserDropDown
+export default UserDropdown

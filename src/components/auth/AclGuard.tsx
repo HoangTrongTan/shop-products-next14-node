@@ -40,7 +40,8 @@ const AclGuard = (props: AclGuardProps) => {
     authGuard,
     ability: ability?.can(aclAbilities.action, aclAbilities.subject),
     permisstionUser,
-    user: auth.user
+    user: auth.user,
+    router: router.route,
   })
 
   if (guestGuard || router.route === '/500' || router.route === '/404' || !authGuard) {

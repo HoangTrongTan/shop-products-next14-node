@@ -23,6 +23,7 @@ import { resetInitialState } from 'src/stores/auth'
 import Spinner from 'src/components/spinner'
 import CustomSelect from 'src/components/custom-select'
 import { getAllRoles } from 'src/services/role'
+import { getAllCities } from 'src/services/city'
 // import { useAuth } from 'src/hooks/useAuth'
 type TProps = {}
 
@@ -37,13 +38,14 @@ type TDefaultValue = {
 
 const MyprofilePage: NextPage<TProps> = () => {
   const { i18n } = useTranslation()
+  const dispatch: AppDispatch = useDispatch()
   // State
   const [loading, setLoading] = useState(false)
-  const [roleId, setRoleId] = useState('')
-  const dispatch: AppDispatch = useDispatch()
   const [avatar, setAvatar] = useState('')
   const [optionRoles, setOptionRoles] = useState<{ label: string; value: string }[]>([])
-  const [isDisabledRole] = useState(false)
+  const [isDisabledRole, setIsDisabledRole] = useState(false)
+  const [optionCities, setOptionCities] = useState<{ label: string; value: string }[]>([])
+
   //hoooks
   const theme = useTheme()
   //redux
@@ -68,6 +70,7 @@ const MyprofilePage: NextPage<TProps> = () => {
 
   useEffect(() => {
     fetchAllRoles()
+    fetchAllCities()
   }, [])
 
   useEffect(() => {
@@ -119,9 +122,8 @@ const MyprofilePage: NextPage<TProps> = () => {
       .then(async response => {
         setLoading(false)
         const data = response?.data
-        console.log(data)
         if (data) {
-          setRoleId(data?.role?._id)
+          setIsDisabledRole(!data?.role?.permissions?.length)
           setAvatar(data?.avatar)
           reset({
             email: data?.email,
@@ -134,6 +136,21 @@ const MyprofilePage: NextPage<TProps> = () => {
         }
       })
       .catch(() => {
+        setLoading(false)
+      })
+  }
+
+  const fetchAllCities = async () => {
+    setLoading(true)
+    await getAllCities({ params: { limit: -1, page: -1 } })
+      .then(res => {
+        const data = res?.data.cities
+        if (data) {
+          setOptionCities(data?.map((item: { name: string; _id: string }) => ({ label: item.name, value: item._id })))
+        }
+        setLoading(false)
+      })
+      .catch(e => {
         setLoading(false)
       })
   }
@@ -352,8 +369,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                   <Controller
                     name='city'
                     control={control}
-                    // render={({ field: { onChange, onBlur, value } }) => (
-                    render={() => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <Box>
                         <InputLabel
                           sx={{
@@ -367,7 +383,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                         >
                           {t('City')}
                         </InputLabel>
-                        {/* <CustomSelect
+                        <CustomSelect
                           fullWidth
                           onChange={onChange}
                           options={optionCities}
@@ -386,7 +402,7 @@ const MyprofilePage: NextPage<TProps> = () => {
                           >
                             {errors?.city?.message}
                           </FormHelperText>
-                        )} */}
+                        )} 
                       </Box>
                     )}
                   />
