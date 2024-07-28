@@ -1,22 +1,30 @@
-import { NextPage } from 'next'
-type TProps = {
-  open: boolean
-  toggleDrawer: () => void
-  isHiddenMenu?: boolean // ? để thể hiện giá trị mặc định
-}
+// ** React
 import * as React from 'react'
+
+// ** Next
+import { NextPage } from 'next'
+import Link from 'next/link'
+
+// ** Mui
 import { styled } from '@mui/material/styles'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import IconifyIcon from 'src/components/Icon'
-import UserDropDown from 'src/views/layouts/components/user-dropdown'
-import ModelToggle from './components/mode-toggle'
-import LanguageDropDown from './components/language-dropdown'
+
+// components
+import Icon from 'src/components/Icon'
+import UserDropdown from 'src/views/layouts/components/user-dropdown'
+import ModeToggle from 'src/views/layouts/components/mode-toggle'
+import LanguageDropdown from 'src/views/layouts/components/language-dropdown'
+import CartProduct from 'src/views/layouts/components/cart-product'
+
+// ** Hooks
 import { useAuth } from 'src/hooks/useAuth'
 import { Button } from '@mui/material'
 import { useRouter } from 'next/router'
+
+// config
 import { ROUTE_CONFIG } from 'src/configs/route'
 
 const drawerWidth: number = 240
@@ -25,11 +33,19 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean
 }
 
+type TProps = {
+  open: boolean
+  toggleDrawer: () => void
+  isHideMenu?: boolean
+}
+
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: prop => prop !== 'open'
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: theme.palette.customColors.bodyBg,
+  backgroundColor:
+    theme.palette.mode === 'light' ? theme.palette.customColors.lightPaperBg : theme.palette.customColors.darkPaperBg,
+  color: theme.palette.text.primary,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
@@ -44,9 +60,20 @@ const AppBar = styled(MuiAppBar, {
   })
 }))
 
-const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }) => {
+const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHideMenu }) => {
   const { user } = useAuth()
   const router = useRouter()
+
+  const handleNavigateLogin = () => {
+    if (router.asPath !== '/') {
+      router.replace({
+        pathname: '/login',
+        query: { returnUrl: router.asPath }
+      })
+    } else {
+      router.replace('/login')
+    }
+  }
 
   return (
     <AppBar position='absolute' open={open}>
@@ -56,7 +83,7 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }
           margin: '0 20px'
         }}
       >
-        {!isHiddenMenu && (
+        {!isHideMenu && (
           <IconButton
             edge='start'
             color='inherit'
@@ -67,20 +94,27 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHiddenMenu }
               ...(open && { display: 'none' })
             }}
           >
-            <IconifyIcon icon={'ic:round-menu'} />
+            <Icon icon='ic:round-menu' />
           </IconButton>
         )}
-
-        <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
-          Dashboard
+        <Typography
+          component='h1'
+          variant='h6'
+          color='primary'
+          noWrap
+          sx={{ flexGrow: 1, fontWeight: '600', cursor: 'pointer' }}
+        >
+          <Link style={{ color: 'inherit' }} href={ROUTE_CONFIG.HOME}>
+            LTTD
+          </Link>
         </Typography>
-        <LanguageDropDown />
-        {/* --------change theme------ */}
-        <ModelToggle />
+        <LanguageDropdown />
+        <ModeToggle />
+        <CartProduct />
         {user ? (
-          <UserDropDown />
+          <UserDropdown />
         ) : (
-          <Button variant='contained' sx={{ width: 'auto' }} onClick={() => router.push(`/${ROUTE_CONFIG.LOGIN}`)}>
+          <Button variant='contained' sx={{ ml: 2, width: 'auto' }} onClick={handleNavigateLogin}>
             Sign In
           </Button>
         )}
