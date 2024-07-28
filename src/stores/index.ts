@@ -11,6 +11,7 @@ import deliveryType from 'src/stores/delivery-type'
 import paymentType from 'src/stores/payment-type'
 import productType from 'src/stores/product-type'
 import orderProduct from 'src/stores/order-product'
+import reviews from 'src/stores/reviews'
 
 
 export const store = configureStore({
@@ -23,7 +24,8 @@ export const store = configureStore({
     deliveryType,
     paymentType,
     productType,
-    orderProduct
+    orderProduct,
+    reviews
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
